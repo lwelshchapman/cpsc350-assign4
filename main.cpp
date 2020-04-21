@@ -1,26 +1,53 @@
 // CPSC-350-01 Assignment 4
 // main.cpp
-// Test driver to check doubly-linked list functionality (temporary; replace when needed!).
+// Test driver to check template queue functionality (temporary; replace when needed!).
 // Logan Welsh
 // 04/18/2020
 
 #include <iostream>
 #include <string>
-#include "DLL.cpp"
+#include "GenQueue.cpp"
 
 using namespace std;
 
 int main(int argc, char** argv) {
 	
-	DoublyLinkedList<string> *dll = new DoublyLinkedList<string>();
-
-	dll->insertFront("Sup fella?");
-	dll->insertBack("Get cheesed.");
-	dll->insertFront("Good evening, sportsfans!");
+	// Instantiate a queue.
+	GenQueue<int> *gq = new GenQueue<int>();
 	
-	dll->printList();
+	// Throw some values into the queue and check the top.
+	cout << "Enqueueing 42." << endl;
+	gq->enqueue(42);
+	cout << "Peek: " << "\n\t" << gq->peek() << endl;
+	
+	cout << "Enqueueing 117." << endl;
+	gq->enqueue(117);
+	cout << "Peek: " << "\n\t" << gq->peek() << endl;
+	
+	// Dequeue the values.
+	try {
+		cout << "Dequeue: " << "\n\t" << gq->dequeue() << endl;
+	}
+	catch (int e) {
+		cout << "Uh oh: " << e << endl;
+	}
 
-	delete dll;	
+	try {
+		cout << "Dequeue: " << "\n\t" << gq->dequeue() << endl;
+	}
+	catch (int e) {
+		cout << "Uh oh: " << e << endl;
+	}	
+	
+	try {	// This one intentionally fails to show that the exception-handling works.
+		cout << "Dequeue: " << "\n\t" << gq->dequeue() << endl;
+	}
+	catch (int e) {
+		cout << "Tried to dequeue from an empty queue!" << endl;
+	}	
+
+	// Clean up.
+	delete gq;
 	
 	return 0;
 }
