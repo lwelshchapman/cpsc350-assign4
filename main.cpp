@@ -1,51 +1,38 @@
 // CPSC-350-01 Assignment 4
 // main.cpp
-// Test driver to check template queue functionality (temporary; replace when needed!).
+// Test driver to check template queue functionality working with Student class (temporary; replace when needed!).
 // Logan Welsh
 // 04/18/2020
 
 #include <iostream>
 #include <string>
 #include "GenQueue.cpp"
+#include "Student.h"
 
 using namespace std;
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) {	
 	
-	// Instantiate a queue.
-	GenQueue<int> *gq = new GenQueue<int>();
 	
-	// Throw some values into the queue and check the top.
-	cout << "Enqueueing 42." << endl;
-	gq->enqueue(42);
-	cout << "Peek: " << "\n\t" << gq->peek() << endl;
-	
-	cout << "Enqueueing 117." << endl;
-	gq->enqueue(117);
-	cout << "Peek: " << "\n\t" << gq->peek() << endl;
-	
-	// Dequeue the values.
-	try {
-		cout << "Dequeue: " << "\n\t" << gq->dequeue() << endl;
-	}
-	catch (int e) {
-		cout << "Uh oh: " << e << endl;
-	}
+	// Instantiate a Student queue.
+	GenQueue<Student> *gq = new GenQueue<Student>();
 
-	try {
-		cout << "Dequeue: " << "\n\t" << gq->dequeue() << endl;
-	}
-	catch (int e) {
-		cout << "Uh oh: " << e << endl;
-	}	
-	
-	try {	// This one intentionally fails to show that the exception-handling works.
-		cout << "Dequeue: " << "\n\t" << gq->dequeue() << endl;
-	}
-	catch (int e) {
-		cout << "Tried to dequeue from an empty queue!" << endl;
-	}	
+	// Throw some Students into the queue.
+	gq->enqueue(Student(1, 5));	// Student A
+	gq->enqueue(Student(1, 10));	// Student B
+	gq->enqueue(Student(3, 4));	// Student C
 
+	// Test dequeueing functionality.
+	Student testA = gq->dequeue();	// Dequeue A.
+	cout << testA.getWinT() << endl;
+	
+	Student testB = gq->dequeue();	// Dequeue B.
+	cout << testB.getWinT() << endl;
+	
+	cout << testA.getWinT() << endl;	// Check that we still have copy of A after dequeueing.
+
+
+	
 	// Clean up.
 	delete gq;
 	
