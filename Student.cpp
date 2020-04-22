@@ -36,6 +36,7 @@ void Student::setWinT(int winT) {	// Prevents negative window times without anno
 
 
 
+<<<<<<< HEAD
 // Accessors:
 int Student::getArrT() {
 	return arrT;
