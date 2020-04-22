@@ -4,7 +4,6 @@
 // Macy Werner (modified by Logan Welsh)
 // 04/18/2020
 
-#include <iostream>
 #include "DLL.cpp"
 
 template <class T>
