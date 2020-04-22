@@ -6,39 +6,57 @@
 
 #include "Student.h"
 
+// Constructors:
 Student::Student() {
 	init(0, 0);
 }
 
-Student::Student(int arrivalTime, int windowTime) {
-	init(arrivalTime, windowTime);
+Student::Student(int arrT, int winT) {
+	init(arrT, winT);
+}
+
+Student::Student(const Student &other) {
+	init(other.arrT, other.winT);
 }
 
 Student::~Student() {
-	
-}
-
-void Student::init(int arrivalTime, int windowTime) {
-	setArrivalTime(arrivalTime);
-	setWindowTime(windowTime);
+	// Nothing to see here!
 }
 
 
 
-void Student::setArrivalTime(int arrivalTime) {
-	this->arrivalTime = (arrivalTime >= 0) ? arrivalTime : 0;
+// Mutators:
+void Student::setArrT(int arrT) {	// Prevents negative arrival times without annoying "unsigned" keyword.
+	this->arrT = (arrT >= 0) ? arrT : 0;
 }
 
-void Student::setWindowTime(int windowTime) {
-	this->windowTime = (windowTime >= 0) ? windowTime : 0;
+void Student::setWinT(int winT) {	// Prevents negative window times without annoying "unsigned" keyword.
+	this->winT = (winT >= 0) ? winT : 0;
 }
 
 
 
-int Student::getArrivalTime() {
-	return windowTime;
+// Accessors:
+int Student::getArrT() {
+	return arrT;
 }
 
-int Student::getWindowTime() {
-	return windowTime;
+int Student::getWinT() {
+	return winT;
 }
+
+
+
+// Auxiliary functions:
+Student* Student::clone() {
+	return new Student(getArrT(), getWinT());
+}
+
+
+
+// Internal functions:
+void Student::init(int arrT, int winT) {
+	setArrT(arrT);
+	setWinT(winT);
+}
+

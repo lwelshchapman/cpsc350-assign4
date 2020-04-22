@@ -7,22 +7,29 @@
 class Student {
 	
 	public:
+		// Constructors:
 		Student();
-		Student(int arrivalTime, int windowTime);
+		Student(int arrT, int winT);
+		Student(const Student &other);
 		~Student();
 		
-		void setArrivalTime(int arrivalTime);
-		void setWindowTime(int windowTime);
+		// Mutators:
+		void setArrT(int arrT);
+		void setWinT(int winT);
 		
-		int getArrivalTime();
-		int getWindowTime();
+		// Accessors:
+		int getArrT();
+		int getWinT();
 	
-	
+		// Auxiliary functions:
+		Student* clone();
 	
 	private:
-		int arrivalTime;
-		int windowTime;
+		// Member variables:
+		int arrT;	// Arrival time
+		int winT;	// Time needed at the window
 	
-		void init(int arrivalTime, int windowTime);
+		// Internal functions:
+		void init(int arrT, int winT);
 	
 };

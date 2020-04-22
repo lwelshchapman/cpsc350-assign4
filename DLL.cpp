@@ -45,12 +45,8 @@ DLL<T>::DLL() {
 }
 
 template <class T>
-DLL<T>::~DLL() {	// !!
-	// Up to us to implement
-	// Look at removeFront!!
-	
+DLL<T>::~DLL() {	// Calls ListNode's recursive delete, deletes all nodes.
 	delete front;
-	
 }
 
 
@@ -126,10 +122,11 @@ T DLL<T>::removeFront() {
 		}
 		front = front->next;
 
+		size--;
+
 		temp->next = NULL;
 		T tmp = temp->data;
 		delete temp;
-		size--;
 		return tmp;
 	}
 }
