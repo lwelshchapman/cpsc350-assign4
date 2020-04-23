@@ -37,10 +37,9 @@ ListNode<T>::ListNode(T val) {
 
 template <class T>
 ListNode<T>::~ListNode() {
-	
 	if(next != NULL) {	// As it is, recursively deletes all following nodes; Set next to NULL to delete only this node.
 		delete next;
 	}
-	
-	//Debug: cout << "\tDeleting: " << data << endl;
+	// The following line is commented-out to allow custom objects (non-pointers) to be used in the doubly-linked lists.
+	//delete data;
 }

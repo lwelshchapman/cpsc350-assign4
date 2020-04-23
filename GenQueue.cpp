@@ -1,74 +1,65 @@
-#include "GenQueue.h"
+// CPSC-350-01 Assignment 4
+// DLL.cpp
+// Template class for a doubly-linked-list-based queue.
+// Macy Werner (modified by Logan Welsh)
+// 04/18/2020
+
+#include "DLL.cpp"
+
+template <class T>
+class GenQueue{
+
+public:
+  GenQueue(); //default constructor
+  ~GenQueue();
+
+  //core functions
+  void enqueue(T d); //enqueue (at the rear)
+  T dequeue(); //denqueue (at the front)
+
+  //aux functions
+  T peek();
+  bool isEmpty();
+  int getSize();
+
+  DLL<T> *D;
 
 
-GenQueue::GenQueue(){
+};
+
+
+template <class T>
+GenQueue<T>::GenQueue(){
   //default constructor
-  //implement this
-  /*myQueue = new char[128];
-  mSize = 128;
-  front = 0;
-  rear = -1;
-  numElements = 0;*/
-  *D;
-  size = 0;
-  D->front = NULL;
-  D->back = NULL;
+  D = new DLL<T>();
 }
 
-/*GenQueue::GenQueue(int maxSize){
-  myQueue = new char[maxSize];
-  mSize = maxSize;
-  front = 0;
-  rear = -1;
-  numElements = 0;
-}*/
-
-GenQueue::~GenQueue(){
-  //no brackets
+template <class T>
+GenQueue<T>::~GenQueue(){
   delete D;
 }
 
-void GenQueue::insert(int d){
-  //add error checking, make sure its not full before you add
-  ++size;
-  ListNode *node = new ListNode(d);
-  node->data = d;
-  node->next=NULL;
-  if (D->front == NULL){
-    D->front = node;
-  }
-  else{
-    D->back->next = node;
-    D->back = node;
-  }
-  //myQueue[++rear] = d;
-  //++numElements;
+template <class T>
+void GenQueue<T>::enqueue(T d){
+  D->insertBack(d);
 }
 
-int GenQueue::remove(){
-  //error checking, make sure its not empty
-  if (D->front == NULL){
-    //Queue is empty
-  }
-  --size;
-  ListNode *curr = D->front; // from https://www.daniweb.com/programming/software-development/threads/459537/c-object-oriented-queue-using-double-linked-list
-  D->front = D->front->next;
-  delete curr;
-  /*int i = '\0'; //good practice
-  i = myQueue[front];
-  ++front;
-  --numElements;
-  return i;*/
+template <class T>
+T GenQueue<T>::dequeue(){
+  return D->removeFront();
 }
 
-/*char GenQueue::peek(){
-  return myQueue[front];
-}*/
-
-bool GenQueue::isEmpty(){
-  return (size == 0);
+template <class T>
+T GenQueue<T>::peek(){
+  return D->peek(0);
 }
 
-int GenQueue::getSize(){
-  return size;
+template <class T>
+bool GenQueue<T>::isEmpty(){
+  return D->isEmpty();
+}
+
+template <class T>
+int GenQueue<T>::getSize(){
+  return D->getSize();
 }

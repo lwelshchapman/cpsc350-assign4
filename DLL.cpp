@@ -8,17 +8,18 @@
 #include <iostream>
 
 template <class T>
-class DoublyLinkedList {
+class DLL {
 	
 	private:
-		ListNode<T> *front;	// Pointer to front (first node in list)
-		ListNode<T> *back;	// Pointer to back (last node in list)
-		unsigned int size;	// Total number of nodes currently in the list; updated whenever nodes are added/removed
+		int size;	// Total number of nodes currently in the list; updated whenever nodes are added/removed
 
 	public:
-		DoublyLinkedList();	// Default constructor
-		~DoublyLinkedList();	// Destructor
+		DLL();	// Default constructor
+		~DLL();	// Destructor
 		
+		ListNode<T> *front;	// Pointer to front (first node in list)
+		ListNode<T> *back;	// Pointer to back (last node in list)
+
 		void insertFront(T data);
 		void insertBack(T data);
 		T removeFront();
@@ -27,16 +28,16 @@ class DoublyLinkedList {
 		int search(int val);	// Return value or position of node (depending on implementation; typically returns position)
 		int removeAtPos(int pos);
 		int insertAtPos(int pos);	// Optional; very similar to removeAtPos
-		int get(int pos);	// CUSTOM; might rename to "peek"
+		T peek(int pos);	// Get value at index in list
 
-		unsigned int getSize();
+		int getSize();
 		bool isEmpty();
 		void printList();
 
 };
 
 template <class T>
-DoublyLinkedList<T>::DoublyLinkedList() {
+DLL<T>::DLL() {
 	// Empty list
 	size = 0;
 	front = NULL;
@@ -44,27 +45,23 @@ DoublyLinkedList<T>::DoublyLinkedList() {
 }
 
 template <class T>
-DoublyLinkedList<T>::~DoublyLinkedList() {	// !!
-	// Up to us to implement
-	// Look at removeFront!!
-	
+DLL<T>::~DLL() {	// Calls ListNode's recursive delete, deletes all nodes.
 	delete front;
-	
 }
 
 
 template <class T>
-unsigned int DoublyLinkedList<T>::getSize() {
+int DLL<T>::getSize() {
 	return size;
 }
 
 template <class T>
-bool DoublyLinkedList<T>::isEmpty() {
+bool DLL<T>::isEmpty() {
 	return (size == 0);
 }
 
 template <class T>
-void DoublyLinkedList<T>::printList() {
+void DLL<T>::printList() {
 	ListNode<T> *curr = front;	// Doesn't need to be deleted; did not specify "new"; kept on stack, deleted when out of scope
 	int count = 0;
 	
@@ -76,7 +73,7 @@ void DoublyLinkedList<T>::printList() {
 }
 
 template <class T>
-void DoublyLinkedList<T>::insertFront(T d) {
+void DLL<T>::insertFront(T d) {
 	ListNode<T> *node = new ListNode<T>(d);
 	// Check if empty
 	if(isEmpty()) {
@@ -91,7 +88,7 @@ void DoublyLinkedList<T>::insertFront(T d) {
 }
 
 template <class T>
-void DoublyLinkedList<T>::insertBack(T d) {
+void DLL<T>::insertBack(T d) {
 	ListNode<T> *node = new ListNode<T>(d);
 	// Check if empty
 	if(isEmpty()) {
@@ -106,36 +103,38 @@ void DoublyLinkedList<T>::insertBack(T d) {
 }
 
 template <class T>
-T DoublyLinkedList<T>::removeFront() {
+T DLL<T>::removeFront() {
 	// Check if list is empty
 	if(isEmpty()) {
-		return -1;	// Might need to return -1
-	}
-
-	ListNode<T> *temp = front;
-
-
-	if(front->next == NULL) {
-		// Only one item in list
-		back = NULL;
+		throw -1;	// http://www.cplusplus.com/doc/tutorial/exceptions/
 	}
 	else {
-		// More than one node in list
-		front->next->prev = NULL;
-	}
-	front = front->next;
+		ListNode<T> *temp = front;
 
-	temp->next = NULL;
-	int tmp = temp->data;
-	delete temp;
-	size--;
-	return tmp;
+
+		if(front->next == NULL) {
+			// Only one item in list
+			back = NULL;
+		}
+		else {
+			// More than one node in list
+			front->next->prev = NULL;
+		}
+		front = front->next;
+
+		size--;
+
+		temp->next = NULL;
+		T tmp = temp->data;
+		delete temp;
+		return tmp;
+	}
 }
 
 // Need to find the value in the list before we can delete
 // This function does NOT take in a position as a parameter
 template <class T>
-T DoublyLinkedList<T>::remove(T val) {
+T DLL<T>::remove(T val) {
 	ListNode<T> *curr = front;
 
 	while(curr->data != val) {
@@ -143,7 +142,7 @@ T DoublyLinkedList<T>::remove(T val) {
 		curr = curr->next;
 
 		if(curr == NULL) {
-			return NULL;	// Return NULL if the value does not exist in the list
+			throw -1;	// Value does not exist in the list
 		}
 	}
 
@@ -174,15 +173,26 @@ T DoublyLinkedList<T>::remove(T val) {
 }
 
 template <class T>
-int DoublyLinkedList<T>::search(int val) {
+int DLL<T>::search(int val) {
 
 }
 
 
 template <class T>
-int DoublyLinkedList<T>::removeAtPos(int pos) {
+int DLL<T>::removeAtPos(int pos) {
 
 }
 
-
-
+template <class T>
+T DLL<T>::peek(int pos) {
+	if((pos < 0) || (pos > size - 1)) {
+		throw -1;	// Trying to peek outside the range of valid indices
+	}
+	int i = 0;
+	ListNode<T> *curr = front;
+	while(i != pos) {
+		curr = curr->next;
+		i++;
+	}
+	return curr->data;
+}

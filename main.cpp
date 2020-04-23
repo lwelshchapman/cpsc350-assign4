@@ -1,26 +1,34 @@
 // CPSC-350-01 Assignment 4
 // main.cpp
-// Test driver to check doubly-linked list functionality (temporary; replace when needed!).
+// Main driver for Registrar simulation.
 // Logan Welsh
 // 04/18/2020
 
 #include <iostream>
 #include <string>
-#include "DLL.cpp"
+#include "Simulation.h"
 
 using namespace std;
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) {	
 	
-	DoublyLinkedList<string> *dll = new DoublyLinkedList<string>();
-
-	dll->insertFront("Sup fella?");
-	dll->insertBack("Get cheesed.");
-	dll->insertFront("Good evening, sportsfans!");
-	
-	dll->printList();
-
-	delete dll;	
+	try {
+		Simulation *sim = new Simulation("test.in");
+		
+		//sim->printLine();
+		
+		while(!sim->line->isEmpty()) {
+			sim->tickClock();
+		}
+		cout << "Waits: " << sim->getWaits() << endl;
+		cout << "Idles: " << sim->getIdles() << endl;
+		sim->analysis();
+		
+		delete sim;
+	}
+	catch(int e) {
+		cout << "Exception occurred: " << e << endl;
+	}
 	
 	return 0;
 }
