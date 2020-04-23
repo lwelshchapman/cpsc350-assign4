@@ -4,6 +4,14 @@
 // Logan Welsh
 // 04/18/2020
 
+// https://www.learncpp.com/cpp-tutorial/header-guards/
+#ifndef STUDENT_H
+#define STUDENT_H
+
+#include <string>
+
+using namespace std;
+
 class Student {
 	
 	public:
@@ -23,6 +31,7 @@ class Student {
 	
 		// Auxiliary functions:
 		Student* clone();
+		string toString();
 	
 	private:
 		// Member variables:
@@ -33,3 +42,5 @@ class Student {
 		void init(int arrT, int winT);
 	
 };
+
+#endif
