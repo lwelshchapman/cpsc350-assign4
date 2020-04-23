@@ -25,37 +25,37 @@ void Simulation::readFile(string filename){
 		inFS.close();
 		throw -1; // Throw exception: Unable to open input file!
 	}
-	
-	
+
+
 	// Get data from the input file.
 	string inStr = "0";
 	if(!inFS.eof()) {	// Get number of windows.
 		getline(inFS, inStr);
 		win = new Window(stoi(inStr));
 	}
-	
+
 	int atTime = -1;
 	int stuLeft = 0;
 	int newNum = 0;
 	while(!inFS.eof()){	// Get individual students.
 		getline(inFS, inStr);
-		
+
 		if(inStr != "") {	// Ignore empty lines
-	
+
 			newNum = stoi(inStr);
-			
+
 			if(newNum < 0) {
 				throw -2;	// Throw exception: Invalid number in input! (A value was less than zero)
 			}
-		
+
 			if(atTime == -1) {	// This line denotes an arrival time!
 				atTime = newNum;
 			}
-			
+
 			else if(stuLeft == 0) {	// This line denotes a number of students!
 				stuLeft = newNum;
 			}
-			
+
 			else {	// This line denotes a student's window time!
 				line->enqueue(Student(atTime, newNum));
 				stuLeft--;
@@ -63,30 +63,30 @@ void Simulation::readFile(string filename){
 					atTime = -1;
 				}
 			}
-			
+
 		}
 	}
-	
+
 	inFS.close();
 
 	if((atTime != -1) || (stuLeft != 0)) {
 		throw -3;	// Throw exception: Input ended early! (Declared larger number of students than were given window times)
 	}
-	
+
 }
 
 void Simulation::tickClock() {
-	
+
 	// Debug report
 	/*
 	cout << "Time: " << time << endl;
 	cout << time << ' ' << line->peek().getArrT() << endl;
 	cout << win->isFull() << endl;
 	*/
-	
+
 	// Update windows, a minute has passed
 	win->windowDecrease();
-	
+
 	// Check for events happening at this minute
 	while(!(win->isFull()) && !(line->isEmpty()) && (line->peek().getArrT() <= time)) {
 		//cout << "boing" << endl;
@@ -95,7 +95,7 @@ void Simulation::tickClock() {
 		int windowIdle = win->assignWindow(first);
 		idleTimes->insertBack(windowIdle);
 	}
-	
+
 	// Increment the time for the next loop
 	time++;
 }
@@ -124,7 +124,7 @@ string Simulation::getIdles() {
 
 
 void Simulation::analysis() {
-	
+
 	// Wait time analysis
 	int waitSum = 0;
 	double waitMean = 0.0;
@@ -135,30 +135,43 @@ void Simulation::analysis() {
 	for(int i = 0; i < waitTimes->getSize(); ++i) {
 		// Sum (for mean)
 		waitSum += waitTimes->peek(i);
-		
+
 		// Median
 		//TODO!!!
-		
+
 		// Longest
 		if(waitTimes->peek(i) > longestWait) {
 			longestWait = waitTimes->peek(i);
 		}
-		
+
 		// Greater than 10
 		if(waitTimes->peek(i) > 10) {
 			waitsGrTen++;
 		}
 	}
 	waitMean = waitSum / static_cast<double>(waitTimes->getSize());
-	
-	
-	
+	//Median
+	int size = waitTimes->getSize();
+	int remainder = size%2;
+	if(remainder != 0){ //if odd amount of waitTimes
+		int position = (remainder / 2) + 1;
+		waitMedian = waitTimes->peek(position);
+	}else{ //if even amount of wait times
+		int position = remainder / 2;
+		int first = waitTimes->peek(position);
+		int second = waitTimes->peek(position + 1);
+
+		waitMedian = (first + second) / 2;
+	}
+
+
+
 	// Idle time analysis
 	int idleSum = 0;
 	double idleMean = 0.0;
 	int longestIdle = 0;
 	int idleGrFive = 0;
-	
+
 	for(int i = 0; i < idleTimes->getSize(); ++i) {
 		// Sum (for mean)
 		idleSum += idleTimes->peek(i);
@@ -167,7 +180,7 @@ void Simulation::analysis() {
 		if(idleTimes->peek(i) > longestIdle) {
 			longestIdle = idleTimes->peek(i);
 		}
-		
+
 		// Greater than 10
 		if(idleTimes->peek(i) > 10) {
 			idleGrFive++;
@@ -181,9 +194,9 @@ void Simulation::analysis() {
 	cout << "Median Wait: " << waitMedian << endl;
 	cout << "Longest Wait: " << longestWait << endl;
 	cout << "Waits > 10 min: " << waitsGrTen << endl;
-	
+
 	cout << "Mean Idle: " << idleMean << endl;
 	cout << "Longest Idle: " << longestIdle << endl;
 	cout << "Idle > 5 min: " << idleGrFive << endl;
-	
+
 }
