@@ -1,5 +1,6 @@
 #include <iostream>
-#include "Student.cpp"
+#include <cstdlib>
+#include "Student.h"
 
 using namespace std;
 
@@ -9,7 +10,7 @@ public:
   Window(int x);
   ~Window();
 
-  bool assignWindow(Student* student);
+  int assignWindow(Student student);
   void windowDecrease();
   bool isFull();
 
@@ -17,4 +18,6 @@ public:
 
   int *window;
 
+private:
+  void initWindows(int x);
 };

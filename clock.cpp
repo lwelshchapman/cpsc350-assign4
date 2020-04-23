@@ -1,4 +1,4 @@
-#include "clock.h"
+#include "Clock.h"
 
 Clock::Clock(){
   time = 0;

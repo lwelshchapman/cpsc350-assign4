@@ -36,7 +36,6 @@ void Student::setWinT(int winT) {	// Prevents negative window times without anno
 
 
 
-<<<<<<< HEAD
 // Accessors:
 int Student::getArrT() {
 	return arrT;
@@ -53,6 +52,9 @@ Student* Student::clone() {
 	return new Student(getArrT(), getWinT());
 }
 
+string Student::toString() {
+	return to_string(arrT) + "\t" + to_string(winT);
+}
 
 
 // Internal functions:

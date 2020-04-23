@@ -1,40 +1,34 @@
 // CPSC-350-01 Assignment 4
 // main.cpp
-// Test driver to check template queue functionality working with Student class (temporary; replace when needed!).
+// Main driver for Registrar simulation.
 // Logan Welsh
 // 04/18/2020
 
 #include <iostream>
 #include <string>
-#include "GenQueue.cpp"
-#include "Student.h"
+#include "Simulation.h"
 
 using namespace std;
 
 int main(int argc, char** argv) {	
 	
-	
-	// Instantiate a Student queue.
-	GenQueue<Student> *gq = new GenQueue<Student>();
-
-	// Throw some Students into the queue.
-	gq->enqueue(Student(1, 5));	// Student A
-	gq->enqueue(Student(1, 10));	// Student B
-	gq->enqueue(Student(3, 4));	// Student C
-
-	// Test dequeueing functionality.
-	Student testA = gq->dequeue();	// Dequeue A.
-	cout << testA.getWinT() << endl;
-	
-	Student testB = gq->dequeue();	// Dequeue B.
-	cout << testB.getWinT() << endl;
-	
-	cout << testA.getWinT() << endl;	// Check that we still have copy of A after dequeueing.
-
-
-	
-	// Clean up.
-	delete gq;
+	try {
+		Simulation *sim = new Simulation("test.in");
+		
+		//sim->printLine();
+		
+		while(!sim->line->isEmpty()) {
+			sim->tickClock();
+		}
+		cout << "Waits: " << sim->getWaits() << endl;
+		cout << "Idles: " << sim->getIdles() << endl;
+		sim->analysis();
+		
+		delete sim;
+	}
+	catch(int e) {
+		cout << "Exception occurred: " << e << endl;
+	}
 	
 	return 0;
 }
